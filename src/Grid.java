@@ -6,6 +6,7 @@ import java.util.Random;
 /**
  * This class manages all the game pieces. generating and
  * resetting the game, managing win and loss and storing board data.
+ *
  * @author Ibraheem Masood
  */
 public class Grid {
@@ -19,7 +20,7 @@ public class Grid {
     private int mines;
     private Button[][] buttonArr;
     private int[][] boardArr;
-    private boolean gameOver;
+    private int gameState = 0; // 0 = new game, 1 = playing game, 2 = over game
     private ResetButton resetButton;
     private MineTracker mineTracker;
     private MyTimer myTimer;
@@ -80,9 +81,10 @@ Depreciated, should be moved to generate function.
      * Helper function for checking if a point exists
      * checks row and column, comparing to the dimensions
      * of the board.
+     *
      * @param row the row of the point
      * @param col the column of the point
-     * @return  true if the point exists. False if it doesn't.
+     * @return true if the point exists. False if it doesn't.
      */
     public boolean isValid(int row, int col) {
 
@@ -97,6 +99,7 @@ Depreciated, should be moved to generate function.
     /**
      * runs the game ending sequences, setting smiley emotion
      * to either win or dead, and exposing squares
+     *
      * @param won boolean checking if the game was ended due to a win or a loss
      */
     public void gameOver(boolean won) {
@@ -131,7 +134,7 @@ Depreciated, should be moved to generate function.
             }
         }
 
-        gameOver = true;
+        gameState = 2;
 
     }
 
@@ -163,6 +166,7 @@ Depreciated, should be moved to generate function.
      * Exposes adjacent buttons, if the number of flags
      * around the initial button matches the number of
      * mines around said button
+     *
      * @param button the button to square expose
      */
     public void squareExpose(Button button) {
@@ -193,7 +197,7 @@ Depreciated, should be moved to generate function.
         int gridSize = rows * columns;
         this.resetButton = new ResetButton(new MouseHandler());
         this.mineTracker = new MineTracker(mines);
-        this.gameOver = false;
+        this.gameState = 0;
         this.myTimer = new MyTimer();
         this.mineCoords = new ArrayList<>();
         Random rand = new Random();
@@ -267,6 +271,18 @@ Depreciated, should be moved to generate function.
         return columns;
     }
 
+    public int getRows() {
+        return rows;
+    }
+
+    public int getMines() {
+        return mines;
+    }
+
+    public void setGameState(int state) {
+        gameState = state;
+    }
+
     public MineTracker getTracker() {
         return mineTracker;
     }
@@ -279,8 +295,8 @@ Depreciated, should be moved to generate function.
         return mineCoords;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
+    public int getGameState() {
+        return gameState;
     }
 
     public Button[][] getButtonArr() {
@@ -289,6 +305,11 @@ Depreciated, should be moved to generate function.
 
     public DifficultySelect getDifficultySelect() {
         return difficultySelect;
+    }
+
+
+    public void regenerate() {
+        generate(rows, columns, mines);
     }
 }
 

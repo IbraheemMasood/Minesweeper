@@ -88,7 +88,7 @@ public class Button extends JButton {
         setBackground(Color.lightGray);
         setBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED), new BevelBorder(BevelBorder.LOWERED)));
 
-        if (getValue() == -1 && !Main.game.getBoard().isGameOver()) {
+        if (getValue() == -1 && Main.game.getBoard().getGameState() != 3) {
             Main.game.getBoard().gameOver(false);
             setBackground(new Color(166, 73, 73));
         }

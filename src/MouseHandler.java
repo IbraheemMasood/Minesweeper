@@ -42,10 +42,16 @@ public class MouseHandler implements MouseListener {
             }
 
 
-            if (Main.game.getBoard().isGameOver()) { //Ignores input if game is over
+            if (Main.game.getBoard().getGameState() == 2) { //Ignores input if game is over
                 return;
             }
-
+            if (Main.game.getBoard().getGameState() == 0 && !isRMBPressed) { //If new game and not flagging
+                while (Main.game.getBoard().getButtonArr()[pressed.getLoc()[0]][pressed.getLoc()[1]].getValue() != 0) { //while first spot isn't 0
+                    Main.game.getBoard().regenerate();
+                    pressed = Main.game.getBoard().getButtonArr()[pressed.getLoc()[0]][pressed.getLoc()[1]];
+                    Main.game.getBoard().setGameState(1);
+                }
+            }
             /*
              exposes adjacent tiles to clicked
              button if rmb and lmb are pressed in
@@ -67,7 +73,7 @@ public class MouseHandler implements MouseListener {
 
                 pressed.expose();
 
-                if (!Main.game.getBoard().isGameOver()) {
+                if (Main.game.getBoard().getGameState() == 1) {
                     Main.game.getBoard().getResetButton().setState(2); //Give reset button anxiety while mouse is pressed
                 }
 
@@ -112,7 +118,7 @@ public class MouseHandler implements MouseListener {
             isRMBPressed = false;
         }
 
-        if (!Main.game.getBoard().isGameOver()) {
+        if (Main.game.getBoard().getGameState() == 1) {
             Main.game.getBoard().getResetButton().setState(1);
         }
 
